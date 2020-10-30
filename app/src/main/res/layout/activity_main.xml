@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/hienthi"
+        android:textSize="150dp"
+
+        />
+    <Button
+        android:id="@+id/btn1"
+        android:onClick="hias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        android:layout_marginTop="60dp"
+        android:background="#92000DFF"
+        android:textColor="#EBFF0008"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        />
+
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="LESS"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:background="#9D00FF"
+        android:textColor="#FFF200"
+        />
+
+    <Button
+        android:layout_marginTop="50dp"
+        android:text="Display Number"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4CAF50"
+        android:textColor="#FF5722"
+        android:id="@+id/btn3"
+        />
+
+</LinearLayout>

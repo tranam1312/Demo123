@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="207dp"
+        android:background="#f00"
+        android:layout_height="148dp" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="82.6dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:background="#f000"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="103.5dp"
+        android:layout_height="148dp"
+        android:background="#F015"
+        android:layout_alignBottom="@+id/textView12"
+        android:layout_marginBottom="-149dp" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
+        android:background="#f163"
+        android:layout_alignBottom="@+id/textView13"
+        android:layout_marginBottom="-146dp" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        android:background="#f09"
+        android:layout_alignBottom="@+id/textView15"
+        android:layout_marginBottom="-147dp" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="82.6dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="0dp"
+        android:background="#f89"
+        android:layout_toEndOf="@+id/textView38" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="209dp"
+        android:layout_height="148dp"
+        android:backgroundTint="#f986"
+        android:layout_alignLeft="@+id/textView13"
+        android:layout_marginLeft="208dp"
+        android:background="#f089" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="82.6dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:background="#f596"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView36"
+        android:layout_width="82.6dp"
+        android:layout_height="148dp"
+        android:background="#f578"
+        android:layout_below="@+id/textView8"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/textView26" />
+
+    <TextView
+        android:id="@+id/textView38"
+        android:layout_width="82.6dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:background="#f593"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/textView36" />
+
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="103.5dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:background="#F523"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="149dp"
+        android:layout_toEndOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="103.5dp"
+        android:layout_height="148dp"
+        android:layout_below="@+id/textView8"
+        android:background="#f893"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="149dp"
+        android:layout_toEndOf="@+id/textView39" />
+
+    <TextView
+        android:id="@+id/textView43"
+        android:layout_width="103.5dp"
+        android:layout_height="148dp"
+        android:layout_alignParentTop="true"
+        android:background="#f962"
+        android:layout_marginStart="-1dp"
+        android:layout_marginTop="299dp"
+        android:layout_toEndOf="@+id/textView40" />
+
+
+</RelativeLayout>
