@@ -11,7 +11,6 @@ public interface  SeverApi {
                      @Query("api_key")String api_key,
                      @Query("lat") String lat,
                      @Query("lon")  String lon,
-
                      @Query("format") String format,
                      @Query("nojsoncallback") String nojsoncallback);
 }
