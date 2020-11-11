@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("new ", new Gson().toJson(photoArrayList));
                                 for (int i =0;i<photoArrayList.size();i++)
                                      {
-                                         data = new Data(name.getText().toString(), kD.getText().toString(), vt.getText().toString(), photoArrayList.get(i).getServer(), photoArrayList.get(i).getId(), photoArrayList.get(i).getSecret());
+                                         data = new Data(name.toString(), kD+ "", vt + "", "https://live.staticflickr.com/"+photoArrayList.get(i).getServer().toString()+"/"+photoArrayList.get(i).getId().toString()+"_"+ photoArrayList.get(i).getSecret().toString()+"jpg");
+
                                          dataArrayList.add(data);
                                      }
                                 Intent intent = new Intent(getApplication(), MainActivity5.class);

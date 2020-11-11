@@ -14,35 +14,36 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
 
-    ArrayList<Data>dataArrayList;
+public class databaseAdapter  extends RecyclerView.Adapter<databaseAdapter.ViewHodler> {
+
+    ArrayList<DataEntity> dataEntityArrayList;
     Context context;
-
-    public DataAdapter(ArrayList<Data>dataArrayList, Context context) {
-        this.dataArrayList = dataArrayList;
+    public databaseAdapter( ArrayList<DataEntity> dataEntityArrayList, Context context) {
+        this.dataEntityArrayList=dataEntityArrayList;
         this.context = context;
     }
-
     @NonNull
     @Override
+
+
     public ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item,parent,false);
-        return new ViewHodler(itemView);
+        View  view = layoutInflater.inflate(R.layout.item,parent,false);
+        return new ViewHodler(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHodler holder, int position) {
-       holder.nam.setText("Name: "+dataArrayList.get(position).getName());
-       holder.kd.setText( "latitude: "+ dataArrayList.get(position).getKinhDo());
-       holder.vt.setText("Longidutie: "+dataArrayList.get(position).getViDo());
-       Glide.with(context).load(dataArrayList.get(position).getUrl()).into(holder.imageView);
+    public void onBindViewHolder(@NonNull databaseAdapter.ViewHodler holder, int position) {
+        holder.nam.setText("Name: "+dataEntityArrayList.get(position).getName());
+        holder.kd.setText( "latitude: "+ dataEntityArrayList.get(position).getLatitude());
+        holder.vt.setText("Longidutie: "+dataEntityArrayList.get(position).getLongitude());
+        Glide.with(context).load(dataEntityArrayList.get(position).getUrl()).into(holder.imageView);
     }
 
     @Override
     public int getItemCount() {
-        return dataArrayList.size();
+        return dataEntityArrayList.size();
     }
     public class ViewHodler extends RecyclerView.ViewHolder{
         TextView nam, kd,vt;
@@ -57,7 +58,5 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
 
         }
-
-
-    }
+}
 }

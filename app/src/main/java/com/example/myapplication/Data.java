@@ -3,12 +3,11 @@ package com.example.myapplication;
 import java.io.Serializable;
 
 public class Data implements Serializable {
+
     private String name;
     private String kinhDo;
     private String viDo;
-    private String id;
-    private  String secret;
-     private String server;
+    private String url;
 
     public String getName() {
         return name;
@@ -22,16 +21,8 @@ public class Data implements Serializable {
         return viDo;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public String getServer() {
-        return server;
+    public String getUrl() {
+        return url;
     }
 
     public void setName(String name) {
@@ -46,24 +37,14 @@ public class Data implements Serializable {
         this.viDo = viDo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public void setServer(String server) {
-        this.server = server;
-    }
-
-    public Data(String name, String kinhDo, String viDo, String id, String secret, String server) {
+    public Data(String name, String kinhDo, String viDo, String url) {
         this.name = name;
         this.kinhDo = kinhDo;
         this.viDo = viDo;
-        this.id = id;
-        this.secret = secret;
-        this.server = server;
+        this.url = url;
     }
 }

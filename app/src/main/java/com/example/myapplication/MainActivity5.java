@@ -12,11 +12,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,20 +32,27 @@ public class MainActivity5 extends AppCompatActivity {
     ArrayList<Photo> photoArrayList = new ArrayList<>();
      Data data;
      int n;
+     DataEntity dataEntity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
+        final RecyclerView recyclerView = findViewById(R.id.recyerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getApplication());
+        recyclerView.setLayoutManager(layoutManager);
         button = (Button) findViewById(R.id.button2);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         final String name = bundle.getString("name");
         final double kd = bundle.getDouble("kd");
-         final double vt = bundle.getDouble("vt");
-        final RecyclerView recyclerView = findViewById(R.id.recyerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getApplication());
-        recyclerView.setLayoutManager(layoutManager);
+        final double vt = bundle.getDouble("vt");
+        final Database database = Room.databaseBuilder(getApplicationContext(),Database.class,"Database").allowMainThreadQueries().build();
+
+
+        List<DataEntity> dataEntityArrayList =  database.dataDao().searchData(name,kd,vt);
+        if(dataEntityArrayList.size()==0){
+
         final Gson gson = new GsonBuilder().setLenient().create();
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.flickr.com/")
@@ -51,7 +60,7 @@ public class MainActivity5 extends AppCompatActivity {
                 .build();
         SeverApi severApi = retrofit.create(SeverApi.class);
         severApi.list("flickr.photos.search",
-                "26797f8e6a03ec7dc3b2c1c0829c307c",kd+"",vt+"","json", "1"
+                "bd7369e0033dc16af8b88837b669c0e2",kd+"",vt+"","json", "1"
 
         )
                 .enqueue(new Callback<Response>() {
@@ -65,12 +74,15 @@ public class MainActivity5 extends AppCompatActivity {
                                      Toast.makeText(getApplication(),"Không còn kết quả ",Toast.LENGTH_SHORT).show();
                                  }
                                  else {
+                                     Toast.makeText(getApplication(),"load từ api",Toast.LENGTH_LONG).show();
                                      Toast.makeText(getApplication(),"Đã load thành công ",Toast.LENGTH_SHORT).show();
                                      for (int i = 0; i < photoArrayList.size(); i++) {
-                                         data = new Data(name, kd + "", vt + "", photoArrayList.get(i).getServer(), photoArrayList.get(i).getId(), photoArrayList.get(i).getSecret());
+                                         data = new Data(name, kd + "", vt + "", "https://live.staticflickr.com/"+photoArrayList.get(i).getServer().toString()+"/"+photoArrayList.get(i).getId().toString()+"_"+ photoArrayList.get(i).getSecret().toString()+".jpg");
                                          dataArrayList.add(data);
+                                         database.dataDao().insertData(new DataEntity(name,kd,vt,"https://live.staticflickr.com/"+photoArrayList.get(i).getServer().toString()+"/"+photoArrayList.get(i).getId().toString()+"_"+ photoArrayList.get(i).getSecret().toString()+".jpg"));
                                          DataAdapter dataAdapter = new DataAdapter(dataArrayList, getApplicationContext());
                                          recyclerView.setAdapter(dataAdapter);
+
                                      }
                                  }}
 
@@ -91,7 +103,7 @@ public class MainActivity5 extends AppCompatActivity {
                                     .build();
                             SeverApi severApi = retrofit.create(SeverApi.class);
                             severApi.list("flickr.photos.search",
-                                    "26797f8e6a03ec7dc3b2c1c0829c307c",n+"",n+"", "json",
+                                    "bd7369e0033dc16af8b88837b669c0e2",n+"",n+"", "json",
                                     "1"
                             )
                                     .enqueue(new Callback<Response>() {
@@ -107,10 +119,13 @@ public class MainActivity5 extends AppCompatActivity {
                                                 Toast.makeText(getApplication(),"Không còn kết quả ",Toast.LENGTH_SHORT).show();
                                             }
                                             else {
+                                                Toast.makeText(getApplication(),"load từ api",Toast.LENGTH_LONG).show();
                                                 Toast.makeText(getApplication(),"Đã load thành công ",Toast.LENGTH_SHORT).show();
                                                 for (int i = 0; i < photoArrayList.size(); i++) {
-                                                    data = new Data(name, kd+"", vt+"", photoArrayList.get(i).getServer(), photoArrayList.get(i).getId(), photoArrayList.get(i).getSecret());
+                                                    data = new Data(name, kd+"", vt+"", "https://live.staticflickr.com/"+photoArrayList.get(i).getServer().toString()+"/"+photoArrayList.get(i).getId().toString()+"_"+ photoArrayList.get(i).getSecret().toString()+".jpg");
                                                     dataArrayList.add(data);
+                                                    database.dataDao().insertData(new DataEntity(name,kd,vt,"https://live.staticflickr.com/"+photoArrayList.get(i).getServer().toString()+"/"+photoArrayList.get(i).getId().toString()+"_"+ photoArrayList.get(i).getSecret().toString()+".jpg"));
+
                                                     DataAdapter dataAdapter = new DataAdapter(dataArrayList, getApplicationContext());
                                                     recyclerView.setAdapter(dataAdapter);
 
@@ -127,7 +142,17 @@ public class MainActivity5 extends AppCompatActivity {
 
                                         }});
                         }
-        });}}
+        });
+        Toast.makeText(getApplication(),"load từ api",Toast.LENGTH_LONG);
+        }else {
+            Toast.makeText(getApplication(),"load từ databse",Toast.LENGTH_LONG).show();
+            databaseAdapter adapter = new databaseAdapter((ArrayList<DataEntity>) dataEntityArrayList,getApplicationContext());
+            recyclerView.setAdapter(adapter);
+
+
+        }
+    }
+}
 
 
 
