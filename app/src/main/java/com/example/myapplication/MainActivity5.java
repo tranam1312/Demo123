@@ -42,9 +42,9 @@ public class MainActivity5 extends AppCompatActivity {
         viewmodel = new ViewModelProvider(this).get(MainViewmodel.class);
 
         final RecyclerView recyclerView = findViewById(R.id.recyerView);
-//       recyclerView.setHasFixedSize(true);
-       LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL,false);
-//       recyclerView.setLayoutManager(layoutManager);
+         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+         recyclerView.setHasFixedSize(true);LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
         button = (Button) findViewById(R.id.button2);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

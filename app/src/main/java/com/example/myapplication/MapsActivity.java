@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -123,14 +124,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final String[] finalAdd = new String[0];
 
         final Database database = Room.databaseBuilder(getApplicationContext(), Database.class, "Database").allowMainThreadQueries().build();
-//        final ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
-//        if (viTriList.size() > 0) {
-//            for (int i = 0; i < viTriList.size(); i++) {
-//                LatLng latLng = new LatLng(viTriList.get(i).getLatitude(), viTriList.get(i).getLongitude());
-//                mMap.addMarker(new MarkerOptions().position(latLng).title(viTriList.get(i).getName()));
-//
-//
-//        };
+
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -148,31 +142,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMapClickListener(  new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(final LatLng latLng) {
+                database.viTriDao().insert(new ViTri(tille(latLng), latLng.latitude, latLng.longitude));
+                mMap.addMarker(new MarkerOptions().position(latLng).title(tille(latLng)));
+                mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.getUiSettings().setZoomGesturesEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mMap.setTrafficEnabled(true);
+                mMap.setBuildingsEnabled(true);
 
-
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(tille(latLng)));
-                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                    mMap.getUiSettings().setCompassEnabled(true);
-                    mMap.getUiSettings().setZoomControlsEnabled(true);
-                    mMap.getUiSettings().setZoomGesturesEnabled(true);
-                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                    mMap.setTrafficEnabled(true);
-                    mMap.setBuildingsEnabled(true);
-//
-
-
-//                } catch ( IOException e) {
-//                }
 
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(getApplication(),MainActivity5.class);
+                        Intent intent = new Intent(getApplication(), MainActivity5.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("name", marker.getTitle());
-                        bundle.putDouble("kd",marker.getPosition().latitude);
-                        bundle.putDouble("vt",marker.getPosition().longitude);
+                        bundle.putDouble("kd", marker.getPosition().latitude);
+                        bundle.putDouble("vt", marker.getPosition().longitude);
                         intent.putExtras(bundle);
                         startActivity(intent);
 
@@ -180,38 +169,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 });
 
 
+            }
 
 
 
+            public String tille(LatLng latLng) {
+                String add = null;
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                try {
 
+                    List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                    android.location.Address obj = addresses.get(0);
+                    add = obj.getAddressLine(0);
+                    add = add + "\n" + obj.getCountryName();
+                    add = add + "\n" + obj.getCountryCode();
+                    add = add + "\n" + obj.getAdminArea();
+                    add = add + "\n" + obj.getPostalCode();
+                    add = add + "\n" + obj.getSubAdminArea();
+                    add = add + "\n" + obj.getLocality();
+                    add = add + "\n" + obj.getSubThoroughfare();
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return add;
             }});
+        final ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
+        if (viTriList.size() > 0) {
+            for (int i = 0; i < viTriList.size(); i++) {
+                LatLng latLng1 = new LatLng(viTriList.get(i).getLatitude(), viTriList.get(i).getLongitude());
+                mMap.addMarker(new MarkerOptions().position(latLng1).title(viTriList.get(i).getName()));
 
 
-    }
-    public String tille(LatLng latLng){
-        String add = null;
-        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-        try {
-
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            android.location.Address obj = addresses.get(0);
-            add = obj.getAddressLine(0);
-            add = add + "\n" + obj.getCountryName();
-            add = add + "\n" + obj.getCountryCode();
-            add = add + "\n" + obj.getAdminArea();
-            add = add + "\n" + obj.getPostalCode();
-            add = add + "\n" + obj.getSubAdminArea();
-            add = add + "\n" + obj.getLocality();
-            add = add + "\n" + obj.getSubThoroughfare();
-
-    } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return  add;
-    }
-}
+            }
+            ;}
+    }}
 
 
 
