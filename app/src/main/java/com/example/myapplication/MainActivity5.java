@@ -28,8 +28,7 @@ public class MainActivity5 extends AppCompatActivity {
     ArrayList<Data>dataArrayList = new ArrayList<>();
     ArrayList<Photo> photoArrayList = new ArrayList<>();
      Data data;
-     int n;
-
+     double n;
      DataEntity dataEntity;
      private MainViewmodel viewmodel;
 
@@ -38,9 +37,7 @@ public class MainActivity5 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
-
         viewmodel = new ViewModelProvider(this).get(MainViewmodel.class);
-
         final RecyclerView recyclerView = findViewById(R.id.recyerView);
          recyclerView.setLayoutManager(new LinearLayoutManager(this));
          recyclerView.setHasFixedSize(true);LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL,false);
@@ -52,9 +49,6 @@ public class MainActivity5 extends AppCompatActivity {
         final double kd = bundle.getDouble("kd");
         final double vt = bundle.getDouble("vt");
         final Database database = Room.databaseBuilder(getApplicationContext(),Database.class,"Database").allowMainThreadQueries().build();
-
-
-
         final List<DataEntity> dataEntityArrayList =  database.dataDao().searchData(name,kd,vt);
         if(dataEntityArrayList.size()==0){
 
@@ -74,11 +68,9 @@ public class MainActivity5 extends AppCompatActivity {
                         Data data = new Data(name, kd+"", vt + "", "https://live.staticflickr.com/" + photoArrayList.get(i).getServer().toString() + "/" + photoArrayList.get(i).getId().toString() + "_" + photoArrayList.get(i).getSecret().toString() + ".jpg");
                         dataArrayList.add(data);
                         database.dataDao().insertData(new DataEntity(name, kd, vt, "https://live.staticflickr.com/" + photoArrayList.get(i).getServer().toString() + "/" + photoArrayList.get(i).getId().toString() + "_" + photoArrayList.get(i).getSecret().toString() + ".jpg"));
-                        DataAdapter dataAdapter = new DataAdapter((ArrayList<Data>) dataArrayList, getApplicationContext());
-                        recyclerView.setAdapter(dataAdapter);
+                        DataAdapter dataAdapter2 = new DataAdapter((ArrayList<Data>) dataArrayList, getApplicationContext());
+                        recyclerView.setAdapter(dataAdapter2);
             }
-
-
         }}
 
             @Override
@@ -87,12 +79,10 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
-
-            final RecyclerView finalRecyclerView = recyclerView;
             button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            viewmodel.getlist(kd+"", vt+"", new Callback<Response>() {
+                            viewmodel.getlist(n+"" ,n+"", new Callback<Response>() {
                                 @Override
                                 public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
                                     Log.d("id", new Gson().toJson(response.body()));
@@ -112,8 +102,7 @@ public class MainActivity5 extends AppCompatActivity {
                                             DataAdapter dataAdapter = new DataAdapter((ArrayList<Data>) dataArrayList, getApplicationContext());
                                             recyclerView.setAdapter(dataAdapter);
                                         }
-
-
+                                        n++;
                                     }}
 
                                 @Override
@@ -133,7 +122,15 @@ public class MainActivity5 extends AppCompatActivity {
 
         }
     }
-}
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        int width = getResources().getDimensionPixelSize(android.R.dimen.thumbnail_height);
+//        int height = getResources().getDimensionPixelSize(android.R.dimen.thumbnail_width);
+//        get.getWindow().setLayout(width, height);
+    }
+
 
 
 

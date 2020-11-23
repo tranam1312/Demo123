@@ -5,49 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
    android:padding="10dp"
+    android:background="#E8D6D6"
    >
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="250dp"
+        android:layout_width="255dp"
         android:layout_height="40dp"
+        android:background="#ffff"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text=""
         app:layout_constraintBottom_toTopOf="@+id/kinhDo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintHorizontal_bias="0.659"
         app:layout_constraintStart_toEndOf="@+id/imgView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.707" />
 
     <TextView
         android:id="@+id/kinhDo"
         android:layout_width="125dp"
         android:layout_height="40dp"
+        android:background="#ffff"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintVertical_bias="0.79" />
 
     <TextView
         android:id="@+id/viDo"
         android:layout_width="125dp"
         android:layout_height="40dp"
+        android:background="#ffff"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toEndOf="@+id/kinhDo"
         app:layout_constraintTop_toBottomOf="@+id/name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.263" />
 
     <ImageView
         android:id="@+id/imgView"
-        android:layout_width="107dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="100dp"
+        android:layout_height="93dp"
         android:background="@drawable/round_imgview"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/kinhDo"

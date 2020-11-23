@@ -55,6 +55,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
             kd = (TextView) itemView.findViewById(R.id.kinhDo);
             vt = (TextView) itemView.findViewById(R.id.viDo);
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
+            nam.setSelected(true);
+            kd.setSelected(true);
+            vt.setSelected(true);
+
 
         }
 
