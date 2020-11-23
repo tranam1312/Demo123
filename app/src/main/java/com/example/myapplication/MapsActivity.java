@@ -6,10 +6,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,21 +24,24 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
-    private GoogleMap mMap;
     SharedPreferences sharedPreferences;
+
     Double i, j;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -43,6 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
 
 //    private static final int REQUEST_CODE_GPS_PERMISSION = 100;
 //
@@ -112,17 +119,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //        }
 //    }
 
-    public void onMapReady(GoogleMap googleMap) {
-        final Database database = Room.databaseBuilder(getApplicationContext(), Database.class, "Database").allowMainThreadQueries().build();
+    public void onMapReady(final GoogleMap mMap) {
+        final String[] finalAdd = new String[0];
 
-        mMap = googleMap;
-        ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
-        if (viTriList.size() > 0) {
-            for (int i = 0; i < viTriList.size(); i++) {
-                LatLng latLng = new LatLng(viTriList.get(i).getLatitude(), viTriList.get(i).getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title(viTriList.get(i).getName()));
-            }
-        }
+        final Database database = Room.databaseBuilder(getApplicationContext(), Database.class, "Database").allowMainThreadQueries().build();
+//        final ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
+//        if (viTriList.size() > 0) {
+//            for (int i = 0; i < viTriList.size(); i++) {
+//                LatLng latLng = new LatLng(viTriList.get(i).getLatitude(), viTriList.get(i).getLongitude());
+//                mMap.addMarker(new MarkerOptions().position(latLng).title(viTriList.get(i).getName()));
+//
+//
+//        };
+
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -134,43 +144,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
+
         mMap.setOnMapClickListener(  new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapClick(LatLng latLng) {
-
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                        Address obj = addresses.get(0);
-                        String add = obj.getAddressLine(0);
-                        add = add + "\n" + obj.getCountryName();
-                        add = add + "\n" + obj.getCountryCode();
-                        add = add + "\n" + obj.getAdminArea();
-                        add = add + "\n" + obj.getPostalCode();
-                        add = add + "\n" + obj.getSubAdminArea();
-                        add = add + "\n" + obj.getLocality();
-                        add = add + "\n" + obj.getSubThoroughfare();
-                        final String name = add;
-                database.viTriDao().insert( new ViTri(name,latLng.latitude,latLng.longitude));
-                mMap.addMarker(new MarkerOptions().position(latLng).title(add));
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                mMap.getUiSettings().setCompassEnabled(true);
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-                mMap.getUiSettings().setZoomGesturesEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mMap.setTrafficEnabled(true);
-                mMap.setBuildingsEnabled(true);
+            public void onMapClick(final LatLng latLng) {
 
 
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(tille(latLng)));
+                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                    mMap.getUiSettings().setCompassEnabled(true);
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                    mMap.getUiSettings().setZoomGesturesEnabled(true);
+                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    mMap.setTrafficEnabled(true);
+                    mMap.setBuildingsEnabled(true);
+//
 
 
-                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//                } catch ( IOException e) {
+//                }
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                     @Override
                     public void onInfoWindowClick(Marker marker) {
                         Intent intent = new Intent(getApplication(),MainActivity5.class);
                         Bundle bundle = new Bundle();
-                        bundle.putString("name", name);
+                        bundle.putString("name", marker.getTitle());
                         bundle.putDouble("kd",marker.getPosition().latitude);
                         bundle.putDouble("vt",marker.getPosition().longitude);
                         intent.putExtras(bundle);
@@ -178,14 +178,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     }
                 });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    }
 
 
 
-            }});}
 
+
+
+
+            }});
+
+
+    }
+    public String tille(LatLng latLng){
+        String add = null;
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            android.location.Address obj = addresses.get(0);
+            add = obj.getAddressLine(0);
+            add = add + "\n" + obj.getCountryName();
+            add = add + "\n" + obj.getCountryCode();
+            add = add + "\n" + obj.getAdminArea();
+            add = add + "\n" + obj.getPostalCode();
+            add = add + "\n" + obj.getSubAdminArea();
+            add = add + "\n" + obj.getLocality();
+            add = add + "\n" + obj.getSubThoroughfare();
+
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  add;
+    }
 }
 
 

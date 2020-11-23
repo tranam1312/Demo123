@@ -56,6 +56,9 @@ public class databaseAdapter  extends RecyclerView.Adapter<databaseAdapter.ViewH
             kd = (TextView) itemView.findViewById(R.id.kinhDo);
             vt = (TextView) itemView.findViewById(R.id.viDo);
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
+            nam.setSelected(true);
+            kd.setSelected(true);
+            vt.setSelected(true);
 
         }
 }
