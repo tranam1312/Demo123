@@ -52,11 +52,11 @@ public class MainActivity5 extends AppCompatActivity {
         final List<DataEntity> dataEntityArrayList =  database.dataDao().searchData(name,kd,vt);
         if(dataEntityArrayList.size()==0){
 
-        viewmodel.getlist(kd+"", vt+"", new Callback<Response>() {
+        viewmodel.getlist(kd+"", vt+"", new Callback<Response1>() {
             @Override
-            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+            public void onResponse(Call<Response1> call, retrofit2.Response<Response1> response) {
                 Log.d("id", new Gson().toJson(response.body()));
-                Response response1 = response.body();
+                Response1 response1 = response.body();
                 ArrayList<Photo> photoArrayList = response1.photos.getPhoto();
                 Log.d("new ", new Gson().toJson(photoArrayList));
                 if (photoArrayList.size() == 0) {
@@ -74,7 +74,7 @@ public class MainActivity5 extends AppCompatActivity {
         }}
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<Response1> call, Throwable t) {
 
             }
         });
@@ -82,11 +82,11 @@ public class MainActivity5 extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            viewmodel.getlist(n+"" ,n+"", new Callback<Response>() {
+                            viewmodel.getlist(n+"" ,n+"", new Callback<Response1>() {
                                 @Override
-                                public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                                public void onResponse(Call<Response1> call, retrofit2.Response<Response1> response) {
                                     Log.d("id", new Gson().toJson(response.body()));
-                                    Response response1 = response.body();
+                                    Response1 response1 = response.body();
                                     ArrayList<Photo> photoArrayList = response1.photos.getPhoto();
                                     Log.d("new ", new Gson().toJson(photoArrayList));
                                     if (photoArrayList.size() == 0) {
@@ -106,7 +106,7 @@ public class MainActivity5 extends AppCompatActivity {
                                     }}
 
                                 @Override
-                                public void onFailure(Call<Response> call, Throwable t) {
+                                public void onFailure(Call<Response1> call, Throwable t) {
 
                                 }
                             });
@@ -122,15 +122,6 @@ public class MainActivity5 extends AppCompatActivity {
 
         }
     }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        int width = getResources().getDimensionPixelSize(android.R.dimen.thumbnail_height);
-//        int height = getResources().getDimensionPixelSize(android.R.dimen.thumbnail_width);
-//        get.getWindow().setLayout(width, height);
-    }
-
-
+    
 
 

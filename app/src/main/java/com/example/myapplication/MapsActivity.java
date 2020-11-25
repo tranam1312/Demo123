@@ -1,18 +1,20 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.room.Room;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,12 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements
+        OnMapReadyCallback {
+    private GoogleMap map;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 10001;
 
-
-    SharedPreferences sharedPreferences;
-
-    Double i, j;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -51,97 +52,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
-//    private static final int REQUEST_CODE_GPS_PERMISSION = 100;
-//
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            //TODO: Get current location
-//            getCurrentLocation();
-//        } else {
-//            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    REQUEST_CODE_GPS_PERMISSION);
-//        }
-//    }
-
-//    private void getCurrentLocation() {
-//        FusedLocationProviderClient mFusedLocationClient =
-//                LocationServices.getFusedLocationProviderClient(this);
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        mFusedLocationClient.getLastLocation()
-//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-//                    @Override
-//                    public void onSuccess(Location location) {
-//                        if (location == null) {
-//                            return;
-//                        }
-//                        LatLng currentLocation =
-//                                new LatLng(location.getLatitude(), location.getLongitude());
-//                        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in current location"));
-//                        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
-//                    }
-//                });
-//    }
-//
-//    /**
-//     * Manipulates the map once available.
-//     * This callback is triggered when the map is ready to be used.
-//     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-//     * we just add a marker near Sydney, Australia.
-//     * If Google Play services is not installed on the device, the user will be prompted to install
-//     * it inside the SupportMapFragment. This method will only be triggered once the user has
-//     * installed Google Play services and returned to the app.
-//     */
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_GPS_PERMISSION:
-//                for (int grantResult : grantResults) {
-//                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
-//                        //TODO: Action when permission denied
-//                    }
-//                }
-//                break;
-//        }
-//    }
-
+    @Override
     public void onMapReady(final GoogleMap mMap) {
         final String[] finalAdd = new String[0];
-
+        map= mMap;
         final Database database = Room.databaseBuilder(getApplicationContext(), Database.class, "Database").allowMainThreadQueries().build();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            enableMyLocation();
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
 
 
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+            }
         }
-        mMap.setMyLocationEnabled(true);
 
-        mMap.setOnMapClickListener(  new GoogleMap.OnMapClickListener() {
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(final LatLng latLng) {
+
                 database.viTriDao().insert(new ViTri(tille(latLng), latLng.latitude, latLng.longitude));
                 mMap.addMarker(new MarkerOptions().position(latLng).title(tille(latLng)));
                 mMap.animateCamera(CameraUpdateFactory.zoomIn());
@@ -167,10 +99,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     }
                 });
-
-
             }
-
 
 
             public String tille(LatLng latLng) {
@@ -180,7 +109,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                     android.location.Address obj = addresses.get(0);
-                    add = obj.getAddressLine(0);
+                    add = obj.getAddressLine(1);
                     add = add + "\n" + obj.getCountryName();
                     add = add + "\n" + obj.getCountryCode();
                     add = add + "\n" + obj.getAdminArea();
@@ -194,7 +123,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
 
                 return add;
-            }});
+            }
+        });
         final ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
         if (viTriList.size() > 0) {
             for (int i = 0; i < viTriList.size(); i++) {
@@ -203,8 +133,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             }
-            ;}
-    }}
+            ;
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    private void enableMyLocation() {
+        map.setMyLocationEnabled(true);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE){
+            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                enableMyLocation();
+            }
+            else {
+
+            }
+        }
+    }
+}
+
+
+
+
 
 
 

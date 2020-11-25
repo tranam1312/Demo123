@@ -2,14 +2,15 @@ package com.example.myapplication;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Response {
+public class Response1 {
+
     @SerializedName("photos")
-    Photos photos;
+      Photos photos;
 
     @SerializedName("stat")
     private String stat;
 
-    public Response(Photos photos) {
+    public Response1(Photos photos) {
         this.photos = photos;
     }
 

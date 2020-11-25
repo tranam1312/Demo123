@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity {
                         "b7de916df5718fb321f56401538f1f87", kD.getText().toString(),vt.getText().toString(), "json",
                         "1"
                 )
-                        .enqueue(new Callback<Response>() {
+                        .enqueue(new Callback<Response1>() {
 
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
-                            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                            public void onResponse(Call<Response1> call, retrofit2.Response<Response1> response) {
                                 Log.d("id", new Gson().toJson(response.body()));
-                                Response response1 = response.body();
+                                Response1 response1 = response.body();
                                 ArrayList<Photo> photoArrayList = (ArrayList<Photo>) response1.photos.getPhoto();
 
                                 Log.e("n", String.valueOf(photoArrayList.size()));
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                             @Override
-                            public void onFailure(Call<Response> call, Throwable t) {
+                            public void onFailure(Call<Response1> call, Throwable t) {
                                 t.printStackTrace();
                                 Toast.makeText(getApplication(), "lỗi ", Toast.LENGTH_SHORT).show();
 

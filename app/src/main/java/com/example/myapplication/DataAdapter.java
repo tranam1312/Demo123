@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,18 +52,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
         public ViewHodler(@NonNull View itemView) {
             super(itemView);
             nam =(TextView) itemView.findViewById(R.id.name);
-            nam.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            nam.setSingleLine(true);
-            nam.setSelected(true);;
             kd = (TextView) itemView.findViewById(R.id.kinhDo);
-            kd.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            kd.setSingleLine(true);
-            kd.setSelected(true);
             vt = (TextView) itemView.findViewById(R.id.viDo);
-            vt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            vt.setSingleLine(true);
-            vt.setSelected(true);
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
+            nam.setSelected(true);
 
 
 

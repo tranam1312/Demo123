@@ -19,7 +19,7 @@ public   class MainViewmodel extends ViewModel{
 
 
 
-    public void getlist(String kd,String vt,Callback<Response> lisener){
+    public void getlist(String kd,String vt,Callback<Response1> lisener){
         final Gson gson = new GsonBuilder().setLenient().create();
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://www.flickr.com")
@@ -27,7 +27,7 @@ public   class MainViewmodel extends ViewModel{
                 .build();
         SeverApi severApi = retrofit.create(SeverApi.class);
          severApi.list("flickr.photos.search",
-                "e76f0f04c064b82975db423af9ff41f5",kd+"",vt+"","json", "1").enqueue(lisener);
+                "16e860cdb07758322fa44bd769825c7f",kd+"",vt+"","json", "1").enqueue(lisener);
     }
 
 }
