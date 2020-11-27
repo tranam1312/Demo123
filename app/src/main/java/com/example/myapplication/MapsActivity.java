@@ -74,15 +74,17 @@ public class MapsActivity extends AppCompatActivity implements
             @Override
             public void onMapClick(final LatLng latLng) {
 
-                database.viTriDao().insert(new ViTri(tille(latLng), latLng.latitude, latLng.longitude));
-                mMap.addMarker(new MarkerOptions().position(latLng).title(tille(latLng)));
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                mMap.getUiSettings().setCompassEnabled(true);
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-                mMap.getUiSettings().setZoomGesturesEnabled(true);
-                mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                mMap.setTrafficEnabled(true);
-                mMap.setBuildingsEnabled(true);
+                    database.viTriDao().insert(new ViTri(adda(latLng), latLng.latitude, latLng.longitude));
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(adda(latLng)));
+                    mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                    mMap.getUiSettings().setCompassEnabled(true);
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                    mMap.getUiSettings().setZoomGesturesEnabled(true);
+                    mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    mMap.setTrafficEnabled(true);
+                    mMap.setBuildingsEnabled(true);
+
+
 
 
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -101,15 +103,13 @@ public class MapsActivity extends AppCompatActivity implements
                 });
             }
 
-
-            public String tille(LatLng latLng) {
-                String add = null;
+            public String adda(LatLng latLng) {
+                String a = null;
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 try {
-
                     List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                     android.location.Address obj = addresses.get(0);
-                    add = obj.getAddressLine(1);
+                    String add = obj.getAddressLine(0);
                     add = add + "\n" + obj.getCountryName();
                     add = add + "\n" + obj.getCountryCode();
                     add = add + "\n" + obj.getAdminArea();
@@ -117,14 +117,20 @@ public class MapsActivity extends AppCompatActivity implements
                     add = add + "\n" + obj.getSubAdminArea();
                     add = add + "\n" + obj.getLocality();
                     add = add + "\n" + obj.getSubThoroughfare();
-
+                    a= add;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                return a;
+            }});
 
-                return add;
-            }
-        });
+
+
+
+
+
+
+
         final ArrayList<ViTri> viTriList = (ArrayList<ViTri>) database.viTriDao().getAll();
         if (viTriList.size() > 0) {
             for (int i = 0; i < viTriList.size(); i++) {

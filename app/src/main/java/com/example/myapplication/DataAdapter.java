@@ -44,6 +44,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
     public int getItemCount() {
         return dataArrayList.size();
     }
+
     public class ViewHodler extends RecyclerView.ViewHolder{
         TextView nam, kd,vt;
 
@@ -56,11 +57,13 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHodler> {
             vt = (TextView) itemView.findViewById(R.id.viDo);
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
             nam.setSelected(true);
-
-
-
         }
 
 
+    }
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        recyclerView.setAddStatesFromChildren(true);
     }
 }

@@ -19,14 +19,14 @@ public class databaseAdapter  extends RecyclerView.Adapter<databaseAdapter.ViewH
 
     ArrayList<DataEntity> dataEntityArrayList;
     Context context;
+
     public databaseAdapter( ArrayList<DataEntity> dataEntityArrayList, Context context) {
         this.dataEntityArrayList=dataEntityArrayList;
         this.context = context;
     }
+
     @NonNull
     @Override
-
-
     public ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View  view = layoutInflater.inflate(R.layout.item,parent,false);
@@ -45,20 +45,20 @@ public class databaseAdapter  extends RecyclerView.Adapter<databaseAdapter.ViewH
     public int getItemCount() {
         return dataEntityArrayList.size();
     }
-    public class ViewHodler extends RecyclerView.ViewHolder{
-        TextView nam, kd,vt;
 
+    public class ViewHodler extends RecyclerView.ViewHolder{
+
+        TextView nam, kd,vt;
         ImageView imageView;
 
         public ViewHodler(@NonNull View itemView) {
+
             super(itemView);
             nam =(TextView) itemView.findViewById(R.id.name);
             kd = (TextView) itemView.findViewById(R.id.kinhDo);
             vt = (TextView) itemView.findViewById(R.id.viDo);
             imageView=(ImageView) itemView.findViewById(R.id.imgView);
             nam.setSelected(true);
-
-
         }
 }
 }
